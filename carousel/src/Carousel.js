@@ -14,11 +14,23 @@ import Card from "./Card";
  *
  * App --> Carousel --> Card
  */
- function Carousel({ photos, title }) {
+function Carousel({ photos, title }) {
   const [currCardIdx, setCurrCardIdx] = useState(0);
 
   const currCard = photos[currCardIdx];
   const total = photos.length;
+
+  //if currCard is equal to 0 then left button should be hidden
+  let leftHidden = "";
+  if (currCardIdx === 0) {
+    leftHidden = "hidden"
+  }
+
+  //if currCard is equal to total - 1, then right button should be hidden
+  let rightHidden = "";
+  if (currCardIdx === total - 1) {
+    rightHidden = "hidden"
+  }
 
   //Increments currCardIdx state by 1
   function goForward() {
@@ -35,7 +47,7 @@ import Card from "./Card";
       <h1>{title}</h1>
       <div className="Carousel-main">
         <i
-          className="bi bi-arrow-left-circle"
+          className={`bi bi-arrow-left-circle ${leftHidden}`}
           onClick={goBackward}
         />
         <Card
@@ -45,7 +57,7 @@ import Card from "./Card";
           totalNum={total}
         />
         <i
-          className="bi bi-arrow-right-circle"
+          className={`bi bi-arrow-right-circle ${rightHidden}`}
           onClick={goForward}
         />
       </div>
