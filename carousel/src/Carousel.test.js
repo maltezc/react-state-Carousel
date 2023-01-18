@@ -16,12 +16,11 @@ test("matches snapshot", function () {
 })
 
 it("works when you click on the right arrow", function () {
-  const { container } = render(
+  const { debug, container } = render(
     <Carousel
       photos={TEST_IMAGES}
       title="images for testing"
     />
-
   );
 
   // expect the first image to show, but not the second
@@ -43,23 +42,43 @@ it("works when you click on the right arrow", function () {
   expect(
     container.querySelector('img[alt="testing image 2"]')
   ).toBeInTheDocument();
+
+
+  // move forward in the carousel
+  const leftArrow = container.querySelector(".bi-arrow-left-circle");
+  fireEvent.click(leftArrow);
+
+   // expect the first image to show, but not the second
+   expect(
+    container.querySelector('img[alt="testing image 1"]')
+  ).toBeInTheDocument();
+
+  expect(
+    container.querySelector('img[alt="testing image 2"]')
+  ).not.toBeInTheDocument();
+
+
 });
 
 
-test("demonstrate that leftArrow and rightArrow do the same thing", function () {
-  const { debug, container } = render(<Carousel photos={photos} title="testTitle" />)
-  debug(container)
+it("tests for hidden arrows on first and last page.", function () {
+  const { debug, container } = render(
+    <Carousel
+      photos={TEST_IMAGES}
+      title="images for testing"
+    />
+  );
+
+  const leftArrow = container.querySelector(".bi-arrow-left-circle");
   const rightArrow = container.querySelector(".bi-arrow-right-circle");
-  const leftArrow = container.querySelector("bi bi-arrow-right-circle")
-  console.log(container.querySelector("img"))
+
+  debug(container);
+  expect(container.querySelector(".bi bi-arrow-left-circle hidden")).toBeInTheDocument()
+
+  fireEvent.click(rightArrow);
   fireEvent.click(rightArrow);
 
+  expect(container.querySelector(".bi bi-arrow-right-circle hidden")).toBeInTheDocument()
 
-  // fireEvent.click(leftArrow);
-  // const containerAfterleft = container
-
-  console.log("originalContainer", originalContainer)
-  console.log("containerAfterRight", containerAfterRight)
-
-})
+});
 
